@@ -1,3 +1,4 @@
+# //from email.policy import default
 from unicodedata import category
 from django.db import models
 from allusers.models import*
@@ -49,6 +50,7 @@ class Apartment(models.Model):
     def __str__(self):
        return self.estate_name + self.company_name
 
+
 #do i really need to have one single model for the property
 #yah i really think i need it
 class Property(models.Model):
@@ -57,7 +59,13 @@ class Property(models.Model):
     category_name = models.ForeignKey(Category,default='0',related_name='property_category',on_delete=models.CASCADE)
     company_name = models.ForeignKey(Company,default='0',related_name="company_propname",on_delete=models.CASCADE)
     location = models.CharField(default='0',blank=False,max_length=55,help_text='property location')
+    tour = models.URLField(blank=False,default='https://my.matterport.com/show/?m=uAAJCS3gnPF')
 
+    sub_users  =models.ManyToManyField(Client, 
+        related_name='properties_subscribed',blank=True
+    )
+    likes = models.PositiveIntegerField(default=0,blank=True,null=True)
+    favs = models.PositiveIntegerField(default=0,blank=True,null=True)
 
     def __str__(self):
         return self.property_name

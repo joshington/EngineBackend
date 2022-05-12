@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager,PermissionsMixin
+    AbstractBaseUser, BaseUserManager,PermissionsMixin,AbstractUser
 )
 class UserManager(BaseUserManager):
     def create_user(self,username,email, password=None):
@@ -31,6 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_verified=models.BooleanField(default=False)
     is_active=models.BooleanField(default=True)
     is_staff=models.BooleanField(default=False)
+    phone = models.CharField(default='0706626855',max_length=10, unique=True,null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

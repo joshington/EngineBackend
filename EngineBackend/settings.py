@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'django_filters',
     'authentication',
     'allusers',
     'property',
@@ -160,11 +161,41 @@ MEDIA_ROOT = "media_root"
 STATIC_ROOT = "static_root"
 # STATIC_URL = '/static/'
 
-CORS_ORIGIN_ALLOW_ALL = True #allow access for all domains
+#CORS_ORIGIN_ALLOW_ALL = True #allow access for all domains
 # CORS_ALLOWED_ORIGINS = [
     # "http://localhost:8000",
     # "http://localhost:3000",
 # ]
+# CORS_ALLOW_METHODS = [
+#     #'DELETE',
+#     'GET',
+#     'OPTIONS',
+#     'PATCH',
+#     'POST',
+#     'PUT',
+# ]
+
+# CORS_ALLOW_HEADERS = [
+# 'accept',
+# 'accept-encoding',
+# 'authorization',
+# 'content-type',
+# 'dnt',
+# 'origin',
+# 'user-agent',
+# 'x-csrftoken',
+# 'x-requested-with',
+# ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
+
+
+
+
+
+
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

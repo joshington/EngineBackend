@@ -1,11 +1,11 @@
 from django.shortcuts import render,get_object_or_404
-from rest_framework import generics,status,views 
+from rest_framework import generics,status,views,filters 
 # Create your views here.
 from rest_framework.views import APIView
 from .models import Category,Property
 from .serializers import*
 from rest_framework.response import Response
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 #view to list all categories
 
@@ -24,6 +24,12 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class CategoryProperty(generics.ListAPIView):
     serializer_class = PropertySerializer
+    #adding filter support
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
+    filterset_fields = ['id','location']
+    search_fields = ['id','location']
+    ordering_fields = ['id','location']
+    #adding filters by id and location 
     def get_queryset(self):
         cat_id = self.kwargs.get('pk',None)
         #print(cat_id)
@@ -63,7 +69,12 @@ class CategoryProperty(generics.ListAPIView):
             # return
             # got abad request
 
-#implementing a search functionality maybe later
-class PropertyDetailView(generics.RetrieveAPIView):
+#implementing a search functionality maybe latelr
+class PropertyDetailView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = "pk"
     queryset=Property.objects.all()
     serializer_class = PropertySerializer
+    name='property-details'
+
+
+#functionality to increment the likes
