@@ -20,10 +20,43 @@ class CreateCompanySerializer(serializers.ModelSerializer):
         #m mostly interested in return
         #company_id = Company.objects.filter(company_name=company).latest().get().id
         #just use latest to get the last model
-        company_id = Company.objects.latest('company_name')
-        
+        #company_id = Company.objects.latest('company_name')
+        return company 
 
-        return company_id  
+    #validating email and username
+    def validate(self,validated_data):
+        company_name = validated_data['company_name']
+        email = validated_data['email']
+        if company_name and email:
+            if Company.objects.filter(company_name=company_name).exists():
+                raise serializers.ValidationError({"company_name":"username already in use"})
+            if Company.objects.filter(email=email).exists():
+                raise serializers.ValidationError({"email":"Email already in use"})
+        else:
+            raise serializers.ValidationError({"empty":"Add data to fields"})
+
+        return validated_data
+
+
+class LoginCompanySerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(style = { 'input_type': 'password'}, trim_whitespace = False)
+
+
+    class Meta:
+        model=Company
+        fields=('id','email','password')
+
+    #handling the validate issue in the serializer
+    def validate(self, validated_data):
+        email  = validated_data['email'].get('email','')
+        password=validated_data['password'].get('email','')
+
+        return super().validate(validated_data)
+
+
+
+
 
 class UpdateCompanySerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
@@ -70,7 +103,7 @@ class UpdateCompanySerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model=Client 
-        fields = ('username','email','location')
+        fields = ('id','name','emailId','countryLocation')
 
     def create(self, validated_data):
         client = Client.objects.create(**validated_data)

@@ -64,8 +64,44 @@ class Property(models.Model):
     sub_users  =models.ManyToManyField(Client, 
         related_name='properties_subscribed',blank=True
     )
+    isSub = models.BooleanField(default=False)
+    #isFav = models.ForeignKey(Client,related_name='user_favourite',blank=True,on_delete=models.DO_NOTHING)
+    isFav = models.BooleanField(default=False)
+    isLike = models.BooleanField(default=False)
     likes = models.PositiveIntegerField(default=0,blank=True,null=True)
     favs = models.PositiveIntegerField(default=0,blank=True,null=True)
+    user_review = models.TextField(max_length=300,blank=True,null=True)
+    #well the idea is that whenever the review is added to the propert
+
+    
+    def __str__(self):
+        return self.property_name  
+
+
+    #i need to call a function that increments the number of likes everytime isFav = true
+    @property
+    def totalFavs(self):
+        if self.isFav:
+            self.favs += 1 #incrementing the likes everytime isFav is set to true
+        else:
+            return self.favs #since nothing has changed we just want to return
+        return self.favs 
+        
+
+    
+#ned t o handle storing multiple images for my property
+
+# class MultipleImage(models.Model):
+#     images = models.FileField()
+
+#creating amodel for storing asingle image.so we'll store each image in aseparate model object.
+# 
+
+
+#while researching i also landed on the following solution
+class Image(models.Model):
+    property = models.ForeignKey(Property, null=False, default=1, on_delete=models.CASCADE)
+    image = models.FileField(upload_to='media')
 
     def __str__(self):
-        return self.property_name
+        return self.property+self.image

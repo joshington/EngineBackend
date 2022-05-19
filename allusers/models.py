@@ -9,10 +9,10 @@ from authentication.models import User
 
 #models for our users of the platform
 class Company(models.Model):
-    company_name  = models.CharField(default='Elephant Plains',blank=False,max_length=200)
+    company_name  = models.CharField(default='Elephant Plains',unique=True,blank=False,max_length=200)
    # slug = models.SlugField(default="abc", unique=True, db_index=True)
     #since every product needs aslug generator
-    email = models.EmailField(blank=False,help_text='enter company email here')
+    email = models.EmailField(blank=False,unique=True,help_text='enter company email here')
     phone=models.CharField(blank=True,null=True,default='0706626855',max_length=15)
     logo = models.FileField()
     password    = models.CharField(max_length=100, null = True, blank = True, default = None)
@@ -24,17 +24,17 @@ class Company(models.Model):
 
 #now the client or the customer
 class Client(models.Model):
-    username = models.CharField(blank=False,max_length=55,help_text='custome name here')
+    name = models.CharField(blank=False,max_length=55,help_text='custome name here')
     # slug = models.SlugField(default="client_slug", unique=True, db_index=True)#since every product needs aslug generator
     # phone_regex= RegexValidator(regex=r'^\+?1?\d{9,15}$',\
     #     message='phone number must be entered in the format 0706626855.upto 10digits allowed')
     # phoneno  = models.CharField(validators =[phone_regex], max_length=15, unique = True
     
-    email =  models.EmailField(blank=False,help_text=' email here')
-    location = models.CharField(default='Uganda',blank=False,max_length=55,help_text='client location')
+    emailId =  models.EmailField(blank=False,help_text=' email here')
+    countryLocation = models.CharField(default='Uganda',blank=False,max_length=55,help_text='client location')
     phone=models.CharField(blank=True,null=True,default='0706626855',max_length=15)
     def __str__(self):
-        return self.username + self.email
+        return self.name
 
 
 #now our admin here
