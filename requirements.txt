@@ -1,6 +1,6 @@
 asgiref==3.4.1
 coverage==3.6
-Django==3.0
+Django==3.2.24
 django-filter==21.1
 django-cors-headers==3.11.0
 django-environ==0.4.5
